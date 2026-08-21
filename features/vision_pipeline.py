@@ -1,20 +1,3 @@
-"""
-Pipeline de vision par ordinateur - Détection de visages (Haar Cascade)
-et d'objets (TFLite/SSD MobileNet) avec prétraitement complet.
-
-Ce script est un vrai pipeline codé de A à Z (pas d'appel à une librairie
-haut niveau type Vilib) :
-  1. Calibration caméra + correction de distorsion (cv2.calibrateCamera)
-  2. Seuillage adaptatif (cv2.adaptiveThreshold) pour l'aperçu binarisé
-  3. Détection de visages via Haar Cascade (OpenCV)
-  4. Détection d'objets via un modèle TFLite pré-entraîné (SSD MobileNet, COCO)
-  5. Mesure du FPS en temps réel
-
-Usage:
-    python3 vision_pipeline.py --source 0        # webcam
-    python3 vision_pipeline.py --source video.mp4 --no-display
-"""
-
 import argparse
 import time
 import os
@@ -28,16 +11,6 @@ from ai_edge_litert.interpreter import Interpreter
 # 1. Calibration caméra / correction de distorsion
 # ----------------------------------------------------------------------
 class CameraCalibrator:
-    """
-    Calibration caméra via une mire en damier (chessboard).
-    Calcule la matrice intrinsèque + les coefficients de distorsion,
-    puis fournit une fonction pour "undistort" chaque frame.
-
-    Sans images de calibration fournies, la classe utilise des valeurs
-    par défaut neutres (pas de distorsion) pour ne pas bloquer le
-    pipeline -- mais le mécanisme de calibration réel (calibrateCamera)
-    est fonctionnel et prêt à être utilisé avec de vraies images de mire.
-    """
 
     def __init__(self, chessboard_size=(9, 6), square_size_mm=25.0):
         self.chessboard_size = chessboard_size
@@ -103,9 +76,6 @@ class CameraCalibrator:
         return cv2.remap(frame, self._map1, self._map2, interpolation=cv2.INTER_LINEAR)
 
 
-# ----------------------------------------------------------------------
-# 2. Prétraitement : seuillage adaptatif
-# ----------------------------------------------------------------------
 def adaptive_threshold_preview(frame):
     """
     Seuillage adaptatif (utile pour visualiser les contours/lignes sous
@@ -124,9 +94,6 @@ def adaptive_threshold_preview(frame):
     return thresh
 
 
-# ----------------------------------------------------------------------
-# 3. Détection de visages : Haar Cascade
-# ----------------------------------------------------------------------
 class FaceDetector:
     def __init__(self):
         cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
@@ -143,9 +110,6 @@ class FaceDetector:
         return faces  # liste de (x, y, w, h)
 
 
-# ----------------------------------------------------------------------
-# 4. Détection d'objets : modèle TFLite pré-entraîné (SSD MobileNet / COCO)
-# ----------------------------------------------------------------------
 class TFLiteObjectDetector:
     def __init__(self, model_path, labels_path, score_threshold=0.5):
         self.interpreter = Interpreter(model_path=model_path)
@@ -197,9 +161,6 @@ class TFLiteObjectDetector:
         return results
 
 
-# ----------------------------------------------------------------------
-# 5. Boucle principale : assemble tout le pipeline
-# ----------------------------------------------------------------------
 def run_pipeline(source, model_path, labels_path, display=True, max_frames=None):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
