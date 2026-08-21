@@ -1,23 +1,5 @@
 #!/bin/bash
 
-: <<'DISCLAIMER'
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-This script is licensed under the terms of the MIT license.
-Unless otherwise noted, code reproduced herein
-was written for this script.
-
-- The Pimoroni Crew - (modified by Adafruit!)
-
-DISCLAIMER
 
 # script control variables
 # =================================================================
@@ -259,12 +241,7 @@ raspbian_check() {
 
 # main
 # =================================================================
-: <<'MAINSTART'
 
-Perform all global variables declarations as well as function definition
-above this section for clarity, thanks!
-
-MAINSTART
 
 # check platform
 #=======================
